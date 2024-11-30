@@ -17,6 +17,7 @@
     "description": "",
     "dependencies": {
         "config": "^3.3.12",
+        "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.21.1",
         "pg": "^8.13.1",
@@ -26,6 +27,7 @@
         "swagger-ui-express": "^5.0.1"
     },
     "devDependencies": {
+        "@types/cors": "^2.8.17",
         "@types/express": "^5.0.0",
         "@types/jest": "^29.5.14",
         "@types/supertest": "^6.0.2",
