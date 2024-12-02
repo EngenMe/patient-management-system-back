@@ -6,12 +6,7 @@ class Doctor extends Model {
     public name!: string;
     public phone!: string;
     public email!: string;
-    public specialty!: string;
-    public qualification!: string;
-    public address?: string;
-    public yearsOfExperience?: number;
-    public availableDays?: string[];
-    public profilePicture?: string;
+    public speciality!: string;
 }
 
 Doctor.init(
@@ -35,29 +30,9 @@ Doctor.init(
             allowNull: false,
             unique: true,
         },
-        specialty: {
+        speciality: {
             type: DataTypes.STRING,
             allowNull: false,
-        },
-        qualification: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        address: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        yearsOfExperience: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
-        availableDays: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
-            allowNull: true,
-        },
-        profilePicture: {
-            type: DataTypes.STRING,
-            allowNull: true,
         },
     },
     {

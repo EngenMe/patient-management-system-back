@@ -14,8 +14,34 @@ afterAll(async () => {
 describe('POST /api/patient/validate', () => {
     beforeEach(async () => {
         await Patient.bulkCreate([
-            { fullName: 'John Michael Doe', email: 'johndoe@example.com', phone: '0123456789' },
-            { fullName: 'Jane Doe', email: 'janedoe@example.com', phone: '9876543210' },
+            {
+                fullName: 'John Michael Doe',
+                email: 'johndoe@example.com',
+                phone: '0123456789',
+                dateOfBirth: new Date('1980-01-01'),
+                gender: 'Male',
+                address: '123 Main St',
+                occupation: 'Software Engineer',
+                emergencyContactName: 'Jane Doe',
+                emergencyContactPhone: '9876543210',
+                consentToTreatment: true,
+                consentToHealthInfoDisclosure: true,
+                agreeToPrivacyPolicy: true,
+            },
+            {
+                fullName: 'Jane Doe',
+                email: 'janedoe@example.com',
+                phone: '9876543210',
+                dateOfBirth: new Date('1990-01-01'),
+                gender: 'Female',
+                address: '456 Elm St',
+                occupation: 'Teacher',
+                emergencyContactName: 'John Doe',
+                emergencyContactPhone: '0123456789',
+                consentToTreatment: true,
+                consentToHealthInfoDisclosure: true,
+                agreeToPrivacyPolicy: true,
+            },
         ]);
     });
 

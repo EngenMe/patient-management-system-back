@@ -14,17 +14,7 @@ class Patient extends Model {
     public emergencyContactPhone!: string;
     public medicalCardNumber?: string;
     public ppsNumber?: string;
-    public gpName?: string;
-    public allergies?: string;
-    public currentMedications?: string;
-    public familyMedicalHistory?: string;
-    public pastMedicalHistory?: string;
-    public identificationType!: string;
-    public identificationNumber!: string;
-    public imageDocument?: string;
-    public consentToTreatment!: boolean;
-    public consentToHealthInfoDisclosure!: boolean;
-    public agreeToPrivacyPolicy!: boolean;
+    public gpId!: number;
 }
 
 Patient.init(
@@ -80,49 +70,9 @@ Patient.init(
             type: DataTypes.STRING,
             allowNull: true,
         },
-        gpName: {
-            type: DataTypes.STRING,
+        gpId: {
+            type: DataTypes.INTEGER,
             allowNull: true,
-        },
-        allergies: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        currentMedications: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        familyMedicalHistory: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        pastMedicalHistory: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        identificationType: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        identificationNumber: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        imageDocument: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        consentToTreatment: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-        },
-        consentToHealthInfoDisclosure: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-        },
-        agreeToPrivacyPolicy: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
         },
     },
     {
