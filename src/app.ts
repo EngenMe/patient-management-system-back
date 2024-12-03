@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import patientRoutes from './routes/patient.routes';
 import doctorRoutes from './routes/doctor.routes';
+import idTypeRoutes from './routes/idType.routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
 import cors from 'cors';
@@ -22,5 +23,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Routes
 app.use('/api/patient', patientRoutes);
 app.use('/api', doctorRoutes);
+app.use('/api', idTypeRoutes);
 
 export default app;
