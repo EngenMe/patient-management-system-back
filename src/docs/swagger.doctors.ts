@@ -36,7 +36,19 @@
  *                         example: 1
  *                       name:
  *                         type: string
- *                         example: Dr. John Smith
+ *                         example: Dr. Emily Carter
+ *                       phone:
+ *                         type: string
+ *                         example: 1234567890
+ *                       email:
+ *                         type: string
+ *                         example: emily.carter@example.com
+ *                       speciality:
+ *                         type: string
+ *                         example: Pediatrics
+ *                       picturePath:
+ *                         type: string
+ *                         example: /images/emily-carter.jpg
  *       404:
  *         description: No doctors found
  *         content:

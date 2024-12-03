@@ -1,5 +1,3 @@
-// doctor.test.ts
-
 import request from 'supertest';
 import express, { Request, Response, NextFunction } from 'express';
 import router from '../src/routes/doctor.routes';
@@ -21,8 +19,22 @@ describe('Doctor Routes', () => {
     describe('POST /doctors', () => {
         it('should return 200 and a list of doctors when doctors are found', async () => {
             const doctors = [
-                { id: 1, name: 'Dr. Smith' },
-                { id: 2, name: 'Dr. Johnson' },
+                {
+                    id: 1,
+                    name: 'Dr. Emily Carter',
+                    phone: '1234567890',
+                    email: 'emily.carter@example.com',
+                    speciality: 'Pediatrics',
+                    picturePath: '/images/emily-carter.jpg',
+                },
+                {
+                    id: 2,
+                    name: 'Dr. James Smith',
+                    phone: '2345678901',
+                    email: 'james.smith@example.com',
+                    speciality: 'Cardiology',
+                    picturePath: '/images/james-smith.jpg',
+                },
             ];
             (Doctor.findAll as jest.Mock).mockResolvedValue(doctors);
 
