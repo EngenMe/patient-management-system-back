@@ -16,7 +16,7 @@ describe('Doctor Routes', () => {
         jest.clearAllMocks();
     });
 
-    describe('POST /doctors', () => {
+    describe('GET /doctors', () => {
         it('should return 200 and a list of doctors when doctors are found', async () => {
             const doctors = [
                 {
@@ -38,7 +38,7 @@ describe('Doctor Routes', () => {
             ];
             (Doctor.findAll as jest.Mock).mockResolvedValue(doctors);
 
-            const response = await request(app).post('/doctors');
+            const response = await request(app).get('/doctors');
 
             expect(Doctor.findAll).toHaveBeenCalledTimes(1);
             expect(response.status).toBe(200);
@@ -52,7 +52,7 @@ describe('Doctor Routes', () => {
         it('should return 404 when no doctors are found', async () => {
             (Doctor.findAll as jest.Mock).mockResolvedValue([]);
 
-            const response = await request(app).post('/doctors');
+            const response = await request(app).get('/doctors');
 
             expect(Doctor.findAll).toHaveBeenCalledTimes(1);
             expect(response.status).toBe(404);
@@ -66,7 +66,7 @@ describe('Doctor Routes', () => {
             const error = new Error('Database error');
             (Doctor.findAll as jest.Mock).mockRejectedValue(error);
 
-            const response = await request(app).post('/doctors');
+            const response = await request(app).get('/doctors');
 
             expect(Doctor.findAll).toHaveBeenCalledTimes(1);
             expect(response.status).toBe(500);
