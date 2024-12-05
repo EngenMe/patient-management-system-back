@@ -25,7 +25,7 @@ describe('Doctor Routes', () => {
                     phone: '1234567890',
                     email: 'emily.carter@example.com',
                     speciality: 'Pediatrics',
-                    picturePath: '/images/emily-carter.jpg',
+                    imageUrl: '/images/emily-carter.jpg',
                 },
                 {
                     id: 2,
@@ -33,7 +33,7 @@ describe('Doctor Routes', () => {
                     phone: '2345678901',
                     email: 'james.smith@example.com',
                     speciality: 'Cardiology',
-                    picturePath: '/images/james-smith.jpg',
+                    imageUrl: '/images/james-smith.jpg',
                 },
             ];
             (Doctor.findAll as jest.Mock).mockResolvedValue(doctors);

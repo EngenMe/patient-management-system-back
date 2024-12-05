@@ -7,7 +7,7 @@ class Doctor extends Model {
     public phone!: string;
     public email!: string;
     public speciality!: string;
-    public picturePath!: string;
+    public imageUrl!: string;
 }
 
 Doctor.init(
@@ -35,7 +35,7 @@ Doctor.init(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        picturePath: {
+        imageUrl: {
             type: DataTypes.STRING,
             allowNull: false,
         },
