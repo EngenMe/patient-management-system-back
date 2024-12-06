@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import router from '../src/routes/idType.routes';
+import router from '../src/routes/idTypes.routes';
 import IdType from '../src/models/idType.model';
 import errorHandler from '../src/middlewares/errorHandler';
 

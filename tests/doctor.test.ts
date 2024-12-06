@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express, { Request, Response, NextFunction } from 'express';
-import router from '../src/routes/doctor.routes';
+import router from '../src/routes/doctors.routes';
 import Doctor from '../src/models/doctor.model';
 import errorHandler from '../src/middlewares/errorHandler';
 

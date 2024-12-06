@@ -1,12 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import patientRoutes from './routes/patient.routes';
-import doctorRoutes from './routes/doctor.routes';
-import idTypeRoutes from './routes/idType.routes';
+import patientValidateRoutes from './routes/patientValidate.routes';
+import doctorRoutes from './routes/doctors.routes';
+import idTypeRoutes from './routes/idTypes.routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
 import cors from 'cors';
 import errorHandler from './middlewares/errorHandler';
+import patientRoutes from './routes/patients.routes';
 
 dotenv.config();
 
@@ -21,8 +22,9 @@ app.use(errorHandler);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
-app.use('/api/patient', patientRoutes);
+app.use('/api/patient', patientValidateRoutes);
 app.use('/api', doctorRoutes);
 app.use('/api', idTypeRoutes);
+app.use('/api', patientRoutes);
 
 export default app;
