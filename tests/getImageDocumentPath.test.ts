@@ -1,70 +1,64 @@
-let uploadMock: jest.Mock;
-
-jest.mock('aws-sdk', () => {
-    uploadMock = jest.fn(() => ({
-        promise: jest.fn(),
-    }));
-
-    return {
-        S3: jest.fn().mockImplementation(() => ({
-            upload: uploadMock,
-        })),
-    };
-});
-
-import AWS from 'aws-sdk';
+import { S3Client } from '@aws-sdk/client-s3';
+import { Upload } from '@aws-sdk/lib-storage';
 import { v4 as uuidv4 } from 'uuid';
 import { getImageDocumentPath } from '../src/helpers/getImageDocumentPath';
 
-jest.mock('uuid');
+jest.mock('@aws-sdk/lib-storage', () => ({
+    Upload: jest.fn(),
+}));
+jest.mock('uuid', () => ({
+    v4: jest.fn(),
+}));
 
 describe('getImageDocumentPath', () => {
-    const mockUuid = 'mocked-uuid';
-
-    const mockFile: Express.Multer.File = {
-        fieldname: 'file',
-        originalname: 'test-image.png',
-        encoding: '7bit',
+    const mockFile = {
+        originalname: 'test.png',
         mimetype: 'image/png',
-        buffer: Buffer.from('mock file content'),
-        size: 1024,
-        destination: '/mock/path',
-        filename: 'test-image.png',
-        path: '/mock/path/test-image.png',
-        stream: undefined as any,
-    };
+        buffer: Buffer.from('test content'),
+    } as Express.Multer.File;
 
-    beforeAll(() => {
-        process.env.AWS_BUCKET_NAME = 'example-bucket';
-    });
+    const mockBucketName = 'example-bucket';
+    const mockRegion = 'us-east-1';
+    const mockS3Client = {};
 
     beforeEach(() => {
         jest.clearAllMocks();
-        (uuidv4 as jest.Mock).mockReturnValue(mockUuid);
-
-        uploadMock.mockReturnValue({
-            promise: jest.fn().mockResolvedValue({
-                Location: 'https://example-bucket.s3.amazonaws.com/uploads/mocked-uuid.png',
-            }),
-        });
+        process.env.AWS_BUCKET_NAME = mockBucketName;
+        process.env.AWS_REGION = mockRegion;
     });
 
-    it('should upload the file to S3 and return the file URL', async () => {
-        const result = await getImageDocumentPath(mockFile);
+    it('should upload a file and return the file URL', async () => {
+        const mockUuid = 'mocked-uuid';
+        const mockLocation = `https://${mockBucketName}.s3.${mockRegion}.amazonaws.com/uploads/mocked-uuid.png`;
 
-        expect(uploadMock).toHaveBeenCalledWith({
-            Bucket: 'example-bucket',
-            Key: `uploads/${mockUuid}.png`,
-            Body: mockFile.buffer,
-            ContentType: mockFile.mimetype,
-            ACL: 'private',
+        (uuidv4 as jest.Mock).mockReturnValue(mockUuid);
+
+        (Upload as unknown as jest.Mock).mockImplementation(({ client, params }) => {
+            expect(client).toBeDefined();
+
+            expect(params).toEqual({
+                Bucket: mockBucketName,
+                Key: `uploads/${mockUuid}.png`,
+                Body: mockFile.buffer,
+                ContentType: mockFile.mimetype,
+                ACL: 'private',
+            });
+
+            return {
+                done: jest.fn().mockResolvedValue({
+                    Location: mockLocation,
+                }),
+            };
         });
 
-        expect(result).toBe('https://example-bucket.s3.amazonaws.com/uploads/mocked-uuid.png');
+        const filePath = await getImageDocumentPath(mockFile);
+
+        expect(filePath).toBe(mockLocation);
+        expect(Upload).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error for unsupported file formats', async () => {
-        const unsupportedFile: Express.Multer.File = {
+        const unsupportedFile = {
             ...mockFile,
             mimetype: 'application/pdf',
         };
@@ -72,16 +66,14 @@ describe('getImageDocumentPath', () => {
         await expect(getImageDocumentPath(unsupportedFile)).rejects.toThrow(
             'Unsupported file format. Supported formats: SVG, PNG, JPG, GIF.'
         );
-
-        expect(uploadMock).not.toHaveBeenCalled();
     });
 
-    it('should handle errors during the upload process', async () => {
-        uploadMock.mockReturnValue({
-            promise: jest.fn().mockRejectedValue(new Error('S3 upload error')),
-        });
+    it('should throw an error if the upload fails', async () => {
+        (uuidv4 as jest.Mock).mockReturnValue('mocked-uuid');
+        (Upload as unknown as jest.Mock).mockImplementation(() => ({
+            done: jest.fn().mockRejectedValue(new Error('Upload failed')),
+        }));
 
         await expect(getImageDocumentPath(mockFile)).rejects.toThrow('Failed to upload the file.');
-        expect(uploadMock).toHaveBeenCalledTimes(1);
     });
 });
