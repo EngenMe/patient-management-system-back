@@ -5,8 +5,10 @@ export const getIdentificationTypeId = async (identificationType: string): Promi
         throw new Error('Identification type is not provided.');
     }
 
+    const formattedIdentificationType = identificationType.replace(/\b\w/, (char) => char.toUpperCase());
+
     const identificationRecord = await IdType.findOne({
-        where: { title: identificationType },
+        where: { title: formattedIdentificationType },
     });
 
     if (!identificationRecord) {

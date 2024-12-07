@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { getImageDocumentPath } from '../helpers/getImageDocumentPath';
-import { getPrimaryCarePhysicianId } from '../helpers/getPrimaryCarePhysicianId';
 import { getIdentificationTypeId } from '../helpers/getIdentificationTypeId';
+import { getPrimaryCarePhysicianId } from '../helpers/getPrimaryCarePhysicainId';
 
-export const reshapePatientData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizePatientData = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { body, file } = req;
         if (!file) throw new Error('No file uploaded');
@@ -24,12 +23,11 @@ export const reshapePatientData = async (req: Request, res: Response, next: Next
             'currentMedications',
             'familyMedicalHistory',
             'pastMedicalHistory',
-            'identificationType',
             'identificationNumber',
+            'imageDocument',
             'consentToTreatment',
             'consentToDisclosure',
             'agreeToPrivacyPolicy',
-            'primaryCarePhysician', // Make sure this field is allowed if you need it
         ];
 
         const reshapedData = allowedFields.reduce(
@@ -40,14 +38,10 @@ export const reshapePatientData = async (req: Request, res: Response, next: Next
             {} as Record<string, any>
         );
 
-        // Await S3 upload and get the URL
-        const imageUrl = await getImageDocumentPath(file.path);
-
         req.body = {
             ...reshapedData,
-            imageDocument: imageUrl, // This is now a string URL
-            primaryCarePhysicianId: getPrimaryCarePhysicianId(body.primaryCarePhysician),
-            identificationTypeId: getIdentificationTypeId(body.identificationType),
+            primaryCarePhysicianId: await getPrimaryCarePhysicianId(body.primaryCarePhysician),
+            identificationTypeId: await getIdentificationTypeId(body.identificationType),
         };
 
         next();
