@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { getImageDocumentPath } from './getImageDocumentPath';
+import { getPrimaryCarePhysicianId } from './getPrimaryCarePhysicianId';
 
 export const reshapePatientData = (req: Request, res: Response, next: NextFunction): void => {
     try {
@@ -34,11 +35,10 @@ export const reshapePatientData = (req: Request, res: Response, next: NextFuncti
             {} as Record<string, any>
         );
 
-        // Add computed fields
         req.body = {
             ...reshapedData,
             imageDocument: getImageDocumentPath(req.body.imageDocument),
-            // primaryCarePhysicianId: getPrimaryCarePhysicianId(req.body.primaryCarePhysician),
+            primaryCarePhysicianId: getPrimaryCarePhysicianId(req.body.primaryCarePhysician),
             // identificationTypeId: getIdentificationTypeId(req.body.identificationNumber),
         };
 

@@ -42,7 +42,6 @@ describe('getImageDocumentPath', () => {
         jest.clearAllMocks();
         (uuidv4 as jest.Mock).mockReturnValue(mockUuid);
 
-        // Now just use uploadMock directly
         uploadMock.mockReturnValue({
             promise: jest.fn().mockResolvedValue({
                 Location: 'https://example-bucket.s3.amazonaws.com/uploads/mocked-uuid.png',
