@@ -7,14 +7,10 @@
 
 /**
  * @swagger
- * /patient/validate:
+ * /patients:
  *   post:
- *     summary: Validate patient information
- *     description: |
- *       This endpoint checks if a patient exists in the system based on their full name, email, and phone number.
- *       - **Exact Match**: All details match, returns success and patient ID.
- *       - **Partial Match**: Email or phone matches but fullName is incorrect, returns an error.
- *       - **No Match**: No record exists, prompts to register a new patient.
+ *     summary: Create a new patient
+ *     description: This endpoint allows you to create a new patient in the system.
  *     tags: [Patients]
  *     requestBody:
  *       required: true
@@ -23,18 +19,42 @@
  *           schema:
  *             type: object
  *             properties:
- *               fullName:
+ *               name:
  *                 type: string
- *                 example: John Michael Doe
- *               email:
+ *                 description: Full name of the patient
+ *                 example: John Doe
+ *               age:
+ *                 type: integer
+ *                 description: Age of the patient
+ *                 example: 30
+ *               gender:
  *                 type: string
- *                 example: johndoe@example.com
- *               phone:
- *                 type: string
- *                 example: 0123456789
+ *                 description: Gender of the patient
+ *                 example: Male
+ *               contactInfo:
+ *                 type: object
+ *                 properties:
+ *                   phone:
+ *                     type: string
+ *                     description: Contact phone number
+ *                     example: +1234567890
+ *                   email:
+ *                     type: string
+ *                     description: Contact email address
+ *                     example: johndoe@example.com
+ *               medicalHistory:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: List of past medical conditions or treatments
+ *                 example: [ "Diabetes", "Hypertension" ]
+ *             required:
+ *               - name
+ *               - age
+ *               - gender
  *     responses:
- *       200:
- *         description: Patient found
+ *       201:
+ *         description: Patient created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -43,14 +63,55 @@
  *                 status:
  *                   type: string
  *                   example: success
+ *                 data:
+ *                   type: object
+ *                   description: The newly created patient record
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       description: Unique identifier for the patient
+ *                       example: 61c9ebf8b6f2c1a678e54b12
+ *                     name:
+ *                       type: string
+ *                       description: Full name of the patient
+ *                       example: John Doe
+ *                     age:
+ *                       type: integer
+ *                       description: Age of the patient
+ *                       example: 30
+ *                     gender:
+ *                       type: string
+ *                       description: Gender of the patient
+ *                       example: Male
+ *                     contactInfo:
+ *                       type: object
+ *                       properties:
+ *                         phone:
+ *                           type: string
+ *                           example: +1234567890
+ *                         email:
+ *                           type: string
+ *                           example: johndoe@example.com
+ *                     medicalHistory:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example: [ "Diabetes", "Hypertension" ]
+ *       400:
+ *         description: Invalid request payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: fail
  *                 message:
  *                   type: string
- *                   example: Patient found.
- *                 redirectTo:
- *                   type: string
- *                   example: /patients/1
- *       400:
- *         description: Patient exists but input data is incorrect
+ *                   example: Invalid request payload.
+ *       500:
+ *         description: An unexpected error occurred
  *         content:
  *           application/json:
  *             schema:
@@ -61,25 +122,5 @@
  *                   example: error
  *                 message:
  *                   type: string
- *                   example: Patient exists, but input data is incorrect.
- *                 conflictingFields:
- *                   type: array
- *                   items:
- *                     type: string
- *       404:
- *         description: No patient record found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: new_patient
- *                 message:
- *                   type: string
- *                   example: No patient found. Redirect to new patient form.
- *                 redirectTo:
- *                   type: string
- *                   example: /patients/new
+ *                   example: An unexpected error occurred.
  */
