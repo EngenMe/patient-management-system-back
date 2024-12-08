@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import Patient from '../models/patient.model';
+import { createOtp } from '../helpers/createOtp';
+import { sendOtpSms } from '../services/sendOtpSms';
+import { Op } from 'sequelize';
 
 export const validatePatient = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -7,7 +10,7 @@ export const validatePatient = async (req: Request, res: Response, next: NextFun
 
         const patient = await Patient.findOne({
             where: {
-                $or: [{ email }, { phone }, { fullName }],
+                [Op.or]: [{ email }, { phone }, { fullName }],
             },
         });
 
@@ -26,6 +29,9 @@ export const validatePatient = async (req: Request, res: Response, next: NextFun
                 });
                 return;
             }
+
+            const otp = await createOtp(patient.id);
+            await sendOtpSms(otp, patient.phone);
 
             res.status(200).json({
                 status: 'success',

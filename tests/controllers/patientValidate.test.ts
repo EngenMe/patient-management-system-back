@@ -1,8 +1,16 @@
 import { validatePatient } from '../../src/controllers/patientValidate.controller';
 import Patient from '../../src/models/patient.model';
+import { createOtp } from '../../src/helpers/createOtp';
+import { sendOtpSms } from '../../src/services/sendOtpSms';
 import { Request, Response, NextFunction } from 'express';
 
 jest.mock('../../src/models/patient.model');
+jest.mock('../../src/helpers/createOtp', () => ({
+    createOtp: jest.fn(),
+}));
+jest.mock('../../src/services/sendOtpSms', () => ({
+    sendOtpSms: jest.fn(),
+}));
 
 describe('validatePatient', () => {
     let req: Partial<Request>;
@@ -28,10 +36,14 @@ describe('validatePatient', () => {
 
     it('should return 200 if patient is found and all fields match', async () => {
         (Patient.findOne as jest.Mock).mockResolvedValue({
+            id: 1,
+            fullName: 'John Doe',
             email: 'johndoe@example.com',
             phone: '1234567890',
-            fullName: 'John Doe',
         });
+
+        (createOtp as jest.Mock).mockResolvedValue('123456');
+        (sendOtpSms as jest.Mock).mockResolvedValue('123456');
 
         await validatePatient(req as Request, res as Response, next);
 
@@ -40,13 +52,16 @@ describe('validatePatient', () => {
             status: 'success',
             message: 'Patient found and all fields match.',
         });
+        expect(createOtp).toHaveBeenCalledWith(1);
+        expect(sendOtpSms).toHaveBeenCalledWith('123456', '1234567890');
     });
 
     it('should return 400 if patient is found but there are conflicting fields', async () => {
         (Patient.findOne as jest.Mock).mockResolvedValue({
+            id: 1,
+            fullName: 'Jane Doe',
             email: 'johndoe@example.com',
-            phone: '9876543210',
-            fullName: 'John Smith',
+            phone: '1234567890',
         });
 
         await validatePatient(req as Request, res as Response, next);
@@ -55,7 +70,7 @@ describe('validatePatient', () => {
         expect(res.json).toHaveBeenCalledWith({
             status: 'error',
             message: 'Conflict detected in patient data.',
-            conflictingFields: ['phone', 'fullName'],
+            conflictingFields: ['fullName'],
         });
     });
 
@@ -81,11 +96,12 @@ describe('validatePatient', () => {
         expect(next).toHaveBeenCalledWith(error);
     });
 
-    it('should include "email" in conflictingFields if the email does not match', async () => {
+    it('should return 400 if patient is found but the email does not match', async () => {
         (Patient.findOne as jest.Mock).mockResolvedValue({
-            email: 'differentemail@example.com',
-            phone: '1234567890',
+            id: 1,
             fullName: 'John Doe',
+            email: 'wrongemail@example.com',
+            phone: '1234567890',
         });
 
         await validatePatient(req as Request, res as Response, next);
@@ -95,6 +111,24 @@ describe('validatePatient', () => {
             status: 'error',
             message: 'Conflict detected in patient data.',
             conflictingFields: ['email'],
+        });
+    });
+
+    it('should return 400 if patient is found but the phone does not match', async () => {
+        (Patient.findOne as jest.Mock).mockResolvedValue({
+            id: 1,
+            fullName: 'John Doe',
+            email: 'johndoe@example.com',
+            phone: '0987654321',
+        });
+
+        await validatePatient(req as Request, res as Response, next);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({
+            status: 'error',
+            message: 'Conflict detected in patient data.',
+            conflictingFields: ['phone'],
         });
     });
 });

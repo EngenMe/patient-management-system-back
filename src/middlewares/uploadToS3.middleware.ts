@@ -13,7 +13,7 @@ const upload = multer({
 
 const accessKey = process.env.ACCESS_KEY as string;
 const secretAccessKey = process.env.SECRET_ACCESS_KEY as string;
-const bucketRegion = process.env.BUCKET_REGION;
+const bucketRegion = process.env.AWS_REGION;
 const bucketName = process.env.BUCKET_NAME;
 
 const s3 = new S3Client({

@@ -1,6 +1,6 @@
 process.env.ACCESS_KEY = 'mock-access-key';
 process.env.SECRET_ACCESS_KEY = 'mock-secret-access-key';
-process.env.BUCKET_REGION = 'mock-bucket-region';
+process.env.AWS_REGION = 'mock-bucket-region';
 process.env.BUCKET_NAME = 'mock-bucket-name';
 
 import express, { NextFunction, Request, Response } from 'express';
@@ -25,7 +25,7 @@ describe('uploadToS3 middleware', () => {
     beforeAll(() => {
         process.env.ACCESS_KEY = 'mockAccessKey';
         process.env.SECRET_ACCESS_KEY = 'mockSecretKey';
-        process.env.BUCKET_REGION = 'mock-region';
+        process.env.AWS_REGION = 'mock-region';
         process.env.BUCKET_NAME = 'mock-bucket';
 
         app = express();
@@ -82,12 +82,12 @@ describe('uploadToS3 middleware', () => {
         beforeAll(() => {
             originalAccessKey = process.env.ACCESS_KEY;
             originalSecretAccessKey = process.env.SECRET_ACCESS_KEY;
-            originalBucketRegion = process.env.BUCKET_REGION;
+            originalBucketRegion = process.env.AWS_REGION;
             originalBucketName = process.env.BUCKET_NAME;
 
             delete process.env.ACCESS_KEY;
             delete process.env.SECRET_ACCESS_KEY;
-            delete process.env.BUCKET_REGION;
+            delete process.env.AWS_REGION;
             delete process.env.BUCKET_NAME;
 
             testApp = express();
@@ -105,7 +105,7 @@ describe('uploadToS3 middleware', () => {
         afterAll(() => {
             process.env.ACCESS_KEY = originalAccessKey;
             process.env.SECRET_ACCESS_KEY = originalSecretAccessKey;
-            process.env.BUCKET_REGION = originalBucketRegion;
+            process.env.AWS_REGION = originalBucketRegion;
             process.env.BUCKET_NAME = originalBucketName;
         });
 
@@ -125,7 +125,7 @@ describe('uploadToS3 middleware', () => {
         beforeAll(() => {
             process.env.ACCESS_KEY = 'mockAccessKey';
             process.env.SECRET_ACCESS_KEY = 'mockSecretKey';
-            process.env.BUCKET_REGION = 'mock-region';
+            process.env.AWS_REGION = 'mock-region';
             process.env.BUCKET_NAME = 'mock-bucket';
 
             appInvalidForm = express();
