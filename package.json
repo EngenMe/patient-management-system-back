@@ -10,7 +10,8 @@
         "lint:fix": "eslint 'src/**/*.{js,ts}' --fix",
         "test": "jest --config jest.config.js",
         "test:watch": "jest --watch",
-        "prettify": "prettier --write 'src/**/*.{js,ts}'"
+        "prettify": "prettier --write 'src/**/*.{js,ts}'",
+        "coverage": "npx jest --coverage"
     },
     "author": "",
     "license": "ISC",

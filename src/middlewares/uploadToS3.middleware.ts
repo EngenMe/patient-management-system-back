@@ -11,14 +11,10 @@ const upload = multer({
     },
 });
 
-const accessKey = process.env.ACCESS_KEY;
-const secretAccessKey = process.env.SECRET_ACCESS_KEY;
+const accessKey = process.env.ACCESS_KEY as string;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY as string;
 const bucketRegion = process.env.BUCKET_REGION;
 const bucketName = process.env.BUCKET_NAME;
-
-if (!accessKey || !secretAccessKey || !bucketRegion || !bucketName) {
-    throw new Error('Missing required AWS environment variables');
-}
 
 const s3 = new S3Client({
     credentials: {

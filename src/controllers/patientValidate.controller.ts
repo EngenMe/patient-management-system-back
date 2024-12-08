@@ -5,22 +5,31 @@ export const validatePatient = async (req: Request, res: Response, next: NextFun
     try {
         const { fullName, email, phone } = req.body;
 
-        const patient = await Patient.findOne({ where: { email, phone } });
+        const patient = await Patient.findOne({
+            where: {
+                $or: [{ email }, { phone }, { fullName }],
+            },
+        });
 
         if (patient) {
-            if (patient.fullName === fullName) {
-                res.status(200).json({
-                    status: 'success',
-                    message: 'Patient found.',
-                    redirectTo: `/patients/${patient.id}`,
+            const conflictingFields: string[] = [];
+
+            if (patient.email !== email) conflictingFields.push('email');
+            if (patient.phone !== phone) conflictingFields.push('phone');
+            if (patient.fullName !== fullName) conflictingFields.push('fullName');
+
+            if (conflictingFields.length > 0) {
+                res.status(400).json({
+                    status: 'error',
+                    message: 'Conflict detected in patient data.',
+                    conflictingFields,
                 });
                 return;
             }
 
-            res.status(400).json({
-                status: 'error',
-                message: 'Patient exists, but input data is incorrect.',
-                conflictingFields: ['fullName'],
+            res.status(200).json({
+                status: 'success',
+                message: 'Patient found and all fields match.',
             });
             return;
         }
