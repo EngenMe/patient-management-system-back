@@ -1,52 +1,49 @@
 import { sendOtpSms } from '../../src/services/sendOtpSms';
-import AWS from 'aws-sdk';
+import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
 
-jest.mock('aws-sdk', () => {
-    const promiseMock = jest.fn();
-    const publishMock = jest.fn(() => ({
-        promise: promiseMock,
-    }));
-
+jest.mock('@aws-sdk/client-sns', () => {
+    const sendMock = jest.fn();
     return {
-        SNS: jest.fn(() => ({
-            publish: publishMock,
+        SNSClient: jest.fn(() => ({
+            send: sendMock,
         })),
+        PublishCommand: jest.fn(),
+        sendMock,
     };
 });
 
 describe('sendOtpSms', () => {
     const phoneNumber = '1234567890';
     const otp = '123456';
-    const SNS = new AWS.SNS();
-    const publishMock = SNS.publish as jest.Mock;
-    const promiseMock = publishMock().promise as jest.Mock;
+    const snsClient = new SNSClient();
+    const sendMock = snsClient.send as jest.Mock;
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     it('should send an OTP SMS successfully', async () => {
-        promiseMock.mockResolvedValue({});
+        sendMock.mockResolvedValue({});
 
         await sendOtpSms(otp, phoneNumber);
 
-        expect(publishMock).toHaveBeenCalledWith({
+        expect(PublishCommand).toHaveBeenCalledWith({
             Message: `Your OTP code is: ${otp}`,
             PhoneNumber: `+353${phoneNumber.trim().substring(1)}`,
         });
-        expect(promiseMock).toHaveBeenCalled();
+        expect(sendMock).toHaveBeenCalled();
     });
 
     it('should throw an error if SNS publish fails', async () => {
         const error = new Error('SNS failure');
-        promiseMock.mockRejectedValue(error);
+        sendMock.mockRejectedValue(error);
 
         await expect(sendOtpSms(otp, phoneNumber)).rejects.toThrow('Failed to send OTP SMS');
 
-        expect(publishMock).toHaveBeenCalledWith({
+        expect(PublishCommand).toHaveBeenCalledWith({
             Message: `Your OTP code is: ${otp}`,
             PhoneNumber: `+353${phoneNumber.trim().substring(1)}`,
         });
-        expect(promiseMock).toHaveBeenCalled();
+        expect(sendMock).toHaveBeenCalled();
     });
 });

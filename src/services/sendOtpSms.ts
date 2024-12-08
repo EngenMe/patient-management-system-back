@@ -1,9 +1,11 @@
-import AWS from 'aws-sdk';
+import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
 
-const sns = new AWS.SNS({
+const snsClient = new SNSClient({
     region: process.env.AWS_REGION,
-    accessKeyId: process.env.ACCESS_KEY,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+    credentials: {
+        accessKeyId: process.env.ACCESS_KEY || '',
+        secretAccessKey: process.env.SECRET_ACCESS_KEY || '',
+    },
 });
 
 export const sendOtpSms = async (otp: string, phoneNumber: string) => {
@@ -13,7 +15,8 @@ export const sendOtpSms = async (otp: string, phoneNumber: string) => {
             PhoneNumber: `+353${phoneNumber.trim().substring(1)}`,
         };
 
-        await sns.publish(params).promise();
+        const command = new PublishCommand(params);
+        await snsClient.send(command);
     } catch (error) {
         console.error('Error sending SMS:', error);
         throw new Error('Failed to send OTP SMS');
