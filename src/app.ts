@@ -23,8 +23,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
 app.use('/api/patient', patientValidateRoutes);
-app.use('/api', doctorRoutes);
-app.use('/api', idTypeRoutes);
-app.use('/api', patientRoutes);
+app.use('/api', doctorRoutes, idTypeRoutes, patientRoutes);
 
 export default app;
