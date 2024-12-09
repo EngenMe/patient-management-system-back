@@ -1,7 +1,7 @@
-import OTP from '../models/otp';
+import OTP from '../models/otp.model';
 import crypto from 'crypto';
 
-export const createOtp = async (patientId: number) => {
+export const createOtp = async (patientId: number): Promise<string> => {
     try {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
 

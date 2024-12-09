@@ -1,7 +1,7 @@
 import Doctor from './doctor.model';
 import Patient from './patient.model';
 import IdType from './idType.model';
-import OTP from './otp';
+import OTP from './otp.model';
 
 const setupAssociations = () => {
     Doctor.hasMany(Patient, { foreignKey: 'primaryCarePhysicianId', as: 'patients' });
