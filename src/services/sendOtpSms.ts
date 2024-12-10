@@ -1,22 +1,14 @@
-import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
+import { Twilio } from 'twilio';
 
-const snsClient = new SNSClient({
-    region: process.env.AWS_REGION,
-    credentials: {
-        accessKeyId: process.env.ACCESS_KEY || '',
-        secretAccessKey: process.env.SECRET_ACCESS_KEY || '',
-    },
-});
+const twilioClient = new Twilio(process.env.TWILIO_ACCOUNT_SID || '', process.env.TWILIO_AUTH_TOKEN || '');
 
 export const sendOtpSms = async (otp: string, phoneNumber: string) => {
     try {
-        const params = {
-            Message: `Your OTP code is: ${otp}`,
-            PhoneNumber: `+353${phoneNumber.trim().substring(1)}`,
-        };
-
-        const command = new PublishCommand(params);
-        await snsClient.send(command);
+        await twilioClient.messages.create({
+            body: `Your OTP code is: ${otp}`,
+            from: process.env.TWILIO_PHONE_NUMBER,
+            to: `+353${phoneNumber.trim().substring(1)}`,
+        });
     } catch (error) {
         console.error('Error sending SMS:', error);
         throw new Error('Failed to send OTP SMS');

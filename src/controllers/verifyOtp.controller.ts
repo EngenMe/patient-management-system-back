@@ -18,7 +18,7 @@ export const verifyOtp = async (req: Request, res: Response, next: NextFunction)
         const otpDb = await OTP.findOne({
             where: {
                 patientId,
-                createdAt: {
+                updatedAt: {
                     [Op.gte]: new Date(Date.now() - 10 * 60 * 1000),
                 },
             },
