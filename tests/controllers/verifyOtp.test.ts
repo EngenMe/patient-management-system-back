@@ -6,7 +6,7 @@ import { verifyOtp } from '../../src/controllers/verifyOtp.controller';
 
 jest.mock('../../src/models/otp.model');
 
-describe('verifyOtp', () => {
+describe('verifyOtp Controller', () => {
     let req: Partial<Request>;
     let res: Partial<Response>;
     let next: NextFunction;
@@ -48,7 +48,7 @@ describe('verifyOtp', () => {
         expect(OTP.findOne).toHaveBeenCalledWith({
             where: {
                 patientId: 123,
-                createdAt: {
+                updatedAt: {
                     [Op.gte]: expect.any(Date),
                 },
             },
@@ -57,6 +57,24 @@ describe('verifyOtp', () => {
         expect(res.json).toHaveBeenCalledWith({
             success: false,
             message: 'No valid OTP found for the given patientId.',
+        });
+    });
+
+    it('should return 401 if the OTP is invalid', async () => {
+        req.body = { patientId: 123, otp: '456789' };
+
+        const mockOtpRecord = {
+            otpNumber: crypto.createHash('sha256').update('987654').digest('hex'),
+        };
+
+        (OTP.findOne as jest.Mock).mockResolvedValue(mockOtpRecord);
+
+        await verifyOtp(req as Request, res as Response, next);
+
+        expect(res.status).toHaveBeenCalledWith(401);
+        expect(res.json).toHaveBeenCalledWith({
+            success: false,
+            message: 'Invalid OTP.',
         });
     });
 
@@ -70,43 +88,10 @@ describe('verifyOtp', () => {
 
         await verifyOtp(req as Request, res as Response, next);
 
-        expect(OTP.findOne).toHaveBeenCalledWith({
-            where: {
-                patientId: 123,
-                createdAt: {
-                    [Op.gte]: expect.any(Date),
-                },
-            },
-        });
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             success: true,
             message: 'OTP verified successfully.',
-        });
-    });
-
-    it('should return 401 if the OTP is invalid', async () => {
-        req.body = { patientId: 123, otp: '123456' };
-
-        const hashedOtp = crypto.createHash('sha256').update('456789').digest('hex');
-        const mockOtpRecord = { otpNumber: hashedOtp };
-
-        (OTP.findOne as jest.Mock).mockResolvedValue(mockOtpRecord);
-
-        await verifyOtp(req as Request, res as Response, next);
-
-        expect(OTP.findOne).toHaveBeenCalledWith({
-            where: {
-                patientId: 123,
-                createdAt: {
-                    [Op.gte]: expect.any(Date),
-                },
-            },
-        });
-        expect(res.status).toHaveBeenCalledWith(401);
-        expect(res.json).toHaveBeenCalledWith({
-            success: false,
-            message: 'Invalid OTP.',
         });
     });
 

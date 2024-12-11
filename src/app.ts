@@ -4,7 +4,8 @@ import patientValidateRoutes from './routes/patientValidate.routes';
 import doctorRoutes from './routes/doctors.routes';
 import idTypeRoutes from './routes/idTypes.routes';
 import patientRoutes from './routes/patients.routes';
-import verifyOtpRoute from './routes/verifyOtp.routes';
+import verifyOtpRoutes from './routes/verifyOtp.routes';
+import createNewAppointmentRoutes from './routes/appointments.routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
 import cors from 'cors';
@@ -24,6 +25,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
 app.use('/api/patient', patientValidateRoutes);
-app.use('/api', doctorRoutes, idTypeRoutes, patientRoutes, verifyOtpRoute);
+app.use('/api', doctorRoutes, idTypeRoutes, patientRoutes, verifyOtpRoutes, createNewAppointmentRoutes);
 
 export default app;
