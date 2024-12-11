@@ -20,7 +20,8 @@ export const postAppointment = async (req: Request, res: Response): Promise<void
             return;
         }
 
-        const dateTime = new Date(`${expectedAppointmentDate}T${expectedAppointmentTime}`);
+        const dateOnly = expectedAppointmentDate.split('T')[0];
+        const dateTime = new Date(`${dateOnly}T${expectedAppointmentTime}`);
 
         if (isNaN(dateTime.getTime())) {
             res.status(400).json({ message: 'Invalid appointment date or time' });
