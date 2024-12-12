@@ -28,15 +28,6 @@ Admin.init(
                 notEmpty: true,
             },
         },
-        phone: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-                is: /^[+]?[\d\s-]{10,15}$/,
-                notEmpty: true,
-            },
-        },
         password: {
             type: DataTypes.STRING(255),
             allowNull: false,

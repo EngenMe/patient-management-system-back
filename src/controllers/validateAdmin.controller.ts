@@ -11,7 +11,8 @@ export const validateAdmin = async (req: Request, res: Response, next: NextFunct
 
         const admin = await Admin.findOne({
             where: {
-                [Op.or]: [{ email }, { hashedPassword }],
+                email: email,
+                password: hashedPassword,
             },
         });
 
