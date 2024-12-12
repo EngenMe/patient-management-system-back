@@ -3,6 +3,6 @@ import { postAppointment } from '../controllers/postAppointment.controller';
 
 const router = Router();
 
-router.post('/appointments', postAppointment);
+router.post('/', postAppointment);
 
 export default router;

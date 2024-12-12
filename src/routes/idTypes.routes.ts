@@ -3,6 +3,6 @@ import { getAllIdTypes } from '../controllers/idType.controller';
 
 const router = Router();
 
-router.get('/id-types', getAllIdTypes);
+router.get('/', getAllIdTypes);
 
 export default router;

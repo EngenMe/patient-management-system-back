@@ -3,6 +3,6 @@ import { getAllDoctors } from '../controllers/doctor.controller';
 
 const router = Router();
 
-router.get('/doctors', getAllDoctors);
+router.get('/', getAllDoctors);
 
 export default router;
