@@ -19,7 +19,7 @@ Admin.init(
             primaryKey: true,
         },
         email: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(255),
             allowNull: false,
             unique: true,
             validate: {
@@ -28,7 +28,7 @@ Admin.init(
             },
         },
         password: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(255),
             allowNull: false,
             validate: {
                 len: [8, 100],
@@ -36,7 +36,7 @@ Admin.init(
             },
         },
         fullName: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(100),
             allowNull: false,
             validate: {
                 len: [3, 100],
@@ -44,7 +44,7 @@ Admin.init(
             },
         },
         role: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(50),
             allowNull: false,
             defaultValue: 'admin',
             validate: {
@@ -52,7 +52,7 @@ Admin.init(
             },
         },
         status: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(50),
             allowNull: false,
             defaultValue: 'active',
             validate: {
