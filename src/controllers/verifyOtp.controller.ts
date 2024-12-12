@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Op } from 'sequelize';
-import crypto from 'crypto';
 import OTP from '../models/otp.model';
+import { hashString } from '../helpers/hashString';
 
 export const verifyOtp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -32,7 +32,7 @@ export const verifyOtp = async (req: Request, res: Response, next: NextFunction)
             return;
         }
 
-        const hashedOtp = crypto.createHash('sha256').update(otp).digest('hex');
+        const hashedOtp = hashString(otp);
         const isOtpValid = otpDb.otpNumber === hashedOtp;
 
         if (isOtpValid) {

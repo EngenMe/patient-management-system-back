@@ -4,6 +4,7 @@ import sequelize from '../config/database';
 class Admin extends Model {
     public id!: number;
     public email!: string;
+    public phone!: string;
     public password!: string;
     public fullName!: string;
     public role!: string;
@@ -24,6 +25,15 @@ Admin.init(
             unique: true,
             validate: {
                 isEmail: true,
+                notEmpty: true,
+            },
+        },
+        phone: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+                is: /^[+]?[\d\s-]{10,15}$/,
                 notEmpty: true,
             },
         },
