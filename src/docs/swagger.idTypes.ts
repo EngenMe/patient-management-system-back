@@ -2,15 +2,15 @@
  * @swagger
  * tags:
  *   name: ID Types
- *   description: API for managing identification types
+ *   description: API for managing ID types
  */
 
 /**
  * @swagger
- * /id-types:
+ * /api/id-types:
  *   get:
  *     summary: Retrieve all ID types
- *     description: This endpoint retrieves a list of all identification types in the system, such as Passport, Driving License, and National ID.
+ *     description: This endpoint retrieves a list of all ID types available in the system.
  *     tags: [ID Types]
  *     responses:
  *       200:
@@ -25,7 +25,7 @@
  *                   example: success
  *                 message:
  *                   type: string
- *                   example: ID types retrieved successfully.
+ *                   example: ID Types retrieved successfully.
  *                 data:
  *                   type: array
  *                   items:
@@ -37,6 +37,9 @@
  *                       name:
  *                         type: string
  *                         example: Passport
+ *                       description:
+ *                         type: string
+ *                         example: Official travel document
  *       404:
  *         description: No ID types found
  *         content:

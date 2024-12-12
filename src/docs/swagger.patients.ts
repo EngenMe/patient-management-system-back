@@ -7,10 +7,86 @@
 
 /**
  * @swagger
- * /patients:
+ * /api/patients/id:
+ *   get:
+ *     summary: Retrieve a patient's ID by email
+ *     description: This endpoint retrieves the ID of a patient based on their email address.
+ *     tags: [Patients]
+ *     parameters:
+ *       - in: query
+ *         name: email
+ *         required: true
+ *         description: The email address of the patient
+ *         schema:
+ *           type: string
+ *           example: patient@example.com
+ *     responses:
+ *       200:
+ *         description: Patient ID retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Patient ID retrieved successfully.
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     patientId:
+ *                       type: integer
+ *                       example: 1
+ *       400:
+ *         description: Email query parameter is missing or invalid
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: Email query parameter is required and must be a valid string.
+ *       404:
+ *         description: Patient not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: Patient not found.
+ *       500:
+ *         description: An unexpected error occurred while retrieving the patient
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: An error occurred.
+ */
+
+/**
+ * @swagger
+ * /api/patients:
  *   post:
  *     summary: Create a new patient
- *     description: This endpoint allows you to create a new patient in the system.
+ *     description: This endpoint allows creating a new patient in the system.
  *     tags: [Patients]
  *     requestBody:
  *       required: true
@@ -19,39 +95,15 @@
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               fullName:
  *                 type: string
- *                 description: Full name of the patient
  *                 example: John Doe
- *               age:
- *                 type: integer
- *                 description: Age of the patient
- *                 example: 30
- *               gender:
+ *               email:
  *                 type: string
- *                 description: Gender of the patient
- *                 example: Male
- *               contactInfo:
- *                 type: object
- *                 properties:
- *                   phone:
- *                     type: string
- *                     description: Contact phone number
- *                     example: +1234567890
- *                   email:
- *                     type: string
- *                     description: Contact email address
- *                     example: johndoe@example.com
- *               medicalHistory:
- *                 type: array
- *                 items:
- *                   type: string
- *                 description: List of past medical conditions or treatments
- *                 example: [ "Diabetes", "Hypertension" ]
- *             required:
- *               - name
- *               - age
- *               - gender
+ *                 example: john.doe@example.com
+ *               phone:
+ *                 type: string
+ *                 example: 1234567890
  *     responses:
  *       201:
  *         description: Patient created successfully
@@ -65,53 +117,13 @@
  *                   example: success
  *                 data:
  *                   type: object
- *                   description: The newly created patient record
- *                   properties:
- *                     id:
- *                       type: string
- *                       description: Unique identifier for the patient
- *                       example: 61c9ebf8b6f2c1a678e54b12
- *                     name:
- *                       type: string
- *                       description: Full name of the patient
- *                       example: John Doe
- *                     age:
- *                       type: integer
- *                       description: Age of the patient
- *                       example: 30
- *                     gender:
- *                       type: string
- *                       description: Gender of the patient
- *                       example: Male
- *                     contactInfo:
- *                       type: object
- *                       properties:
- *                         phone:
- *                           type: string
- *                           example: +1234567890
- *                         email:
- *                           type: string
- *                           example: johndoe@example.com
- *                     medicalHistory:
- *                       type: array
- *                       items:
- *                         type: string
- *                       example: [ "Diabetes", "Hypertension" ]
- *       400:
- *         description: Invalid request payload
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: fail
- *                 message:
- *                   type: string
- *                   example: Invalid request payload.
+ *                   example:
+ *                     id: 1
+ *                     fullName: John Doe
+ *                     email: john.doe@example.com
+ *                     phone: 1234567890
  *       500:
- *         description: An unexpected error occurred
+ *         description: An unexpected error occurred while creating the patient
  *         content:
  *           application/json:
  *             schema:
@@ -122,5 +134,91 @@
  *                   example: error
  *                 message:
  *                   type: string
- *                   example: An unexpected error occurred.
+ *                   example: An error occurred.
+ */
+
+/**
+ * @swagger
+ * /api/patient/validate:
+ *   post:
+ *     summary: Validate a patient
+ *     description: Validates the provided patient information and checks for conflicts.
+ *     tags: [Patients]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               fullName:
+ *                 type: string
+ *                 example: John Doe
+ *               email:
+ *                 type: string
+ *                 example: john.doe@example.com
+ *               phone:
+ *                 type: string
+ *                 example: 1234567890
+ *     responses:
+ *       200:
+ *         description: Patient found and validated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Patient found and all fields match.
+ *       400:
+ *         description: Conflict detected in patient data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: Conflict detected in patient data.
+ *                 conflictingFields:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                     example: email
+ *       404:
+ *         description: No patient found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: new_patient
+ *                 message:
+ *                   type: string
+ *                   example: No patient found. Redirect to new patient form.
+ *                 redirectTo:
+ *                   type: string
+ *                   example: /patients/new
+ *       500:
+ *         description: An unexpected error occurred while validating the patient
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: An error occurred.
  */

@@ -7,7 +7,7 @@
 
 /**
  * @swagger
- * /doctors:
+ * /api/doctors:
  *   get:
  *     summary: Retrieve all doctors
  *     description: This endpoint retrieves a list of all doctors in the system.
@@ -46,9 +46,9 @@
  *                       speciality:
  *                         type: string
  *                         example: Pediatrics
- *                       picturePath:
+ *                       imageUrl:
  *                         type: string
- *                         example: /images/emily-carter.jpg
+ *                         example: https://example.com/images/emily-carter.jpg
  *       404:
  *         description: No doctors found
  *         content:

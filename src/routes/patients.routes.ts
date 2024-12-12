@@ -6,7 +6,7 @@ import { getPatientIdByEmail } from '../controllers/patientGet.controller';
 
 const router = Router();
 
-router.post('/', uploadToS3, normalizePatientData, postPatient);
 router.get('/id', getPatientIdByEmail);
+router.post('/', uploadToS3, normalizePatientData, postPatient);
 
 export default router;

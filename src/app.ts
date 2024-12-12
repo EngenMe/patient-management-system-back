@@ -26,10 +26,10 @@ app.use(errorHandler);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
+app.use('/api/patients', patientRoutes);
 app.use('/api/patient', patientValidateRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/id-types', idTypeRoutes);
-app.use('/api/patients', patientRoutes);
 app.use('/api/verify-otp', verifyOtpRoutes);
 app.use('/api/appointments', createNewAppointmentRoutes);
 app.use('/api/admins', adminRoutes);
