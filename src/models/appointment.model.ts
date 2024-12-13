@@ -10,6 +10,7 @@ class Appointment extends Model {
     public reasonForAppointment!: string;
     public additionalComments?: string;
     public expectedAppointmentDateAndTime!: Date;
+    public status!: 'scheduled' | 'pending' | 'cancelled';
 }
 
 Appointment.init(
@@ -52,6 +53,11 @@ Appointment.init(
             validate: {
                 isDate: true,
             },
+        },
+        status: {
+            type: DataTypes.ENUM('scheduled', 'pending', 'cancelled'),
+            allowNull: false,
+            defaultValue: 'pending',
         },
     },
     {
