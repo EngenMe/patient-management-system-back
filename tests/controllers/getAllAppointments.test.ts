@@ -7,20 +7,25 @@ jest.mock('../../src/models/appointment.model');
 describe('getAllAppointments Controller', () => {
     let req: Partial<Request>;
     let res: Partial<Response>;
-    let mockAppointmentFindAll: jest.Mock;
+    let mockAppointmentFindAndCountAll: jest.Mock;
 
     beforeEach(() => {
-        req = {};
+        req = {
+            query: {
+                page: '1',
+                limit: '5',
+            },
+        };
 
         res = {
             status: jest.fn().mockReturnThis(),
             json: jest.fn(),
         };
 
-        mockAppointmentFindAll = Appointment.findAll as jest.Mock;
+        mockAppointmentFindAndCountAll = Appointment.findAndCountAll as jest.Mock;
     });
 
-    it('should return all appointments with a 200 status', async () => {
+    it('should return paginated appointments with a 200 status', async () => {
         const mockAppointments = [
             {
                 id: 1,
@@ -35,34 +40,46 @@ describe('getAllAppointments Controller', () => {
             },
         ];
 
-        mockAppointmentFindAll.mockResolvedValue(mockAppointments);
+        mockAppointmentFindAndCountAll.mockResolvedValue({ count: 1, rows: mockAppointments });
 
         await getAllAppointments(req as Request, res as Response);
 
-        expect(mockAppointmentFindAll).toHaveBeenCalled();
+        expect(mockAppointmentFindAndCountAll).toHaveBeenCalledWith({
+            limit: 5,
+            offset: 0,
+        });
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             message: 'Appointments retrieved successfully',
             appointments: mockAppointments,
+            currentPage: 1,
+            totalPages: 1,
+            totalAppointments: 1,
         });
     });
 
     it('should return 404 if no appointments are found', async () => {
-        mockAppointmentFindAll.mockResolvedValue([]);
+        mockAppointmentFindAndCountAll.mockResolvedValue({ count: 0, rows: [] });
 
         await getAllAppointments(req as Request, res as Response);
 
-        expect(mockAppointmentFindAll).toHaveBeenCalled();
+        expect(mockAppointmentFindAndCountAll).toHaveBeenCalledWith({
+            limit: 5,
+            offset: 0,
+        });
         expect(res.status).toHaveBeenCalledWith(404);
         expect(res.json).toHaveBeenCalledWith({ message: 'No appointments found' });
     });
 
     it('should return 500 if an unexpected error occurs', async () => {
-        mockAppointmentFindAll.mockRejectedValue(new Error('Unexpected error'));
+        mockAppointmentFindAndCountAll.mockRejectedValue(new Error('Unexpected error'));
 
         await getAllAppointments(req as Request, res as Response);
 
-        expect(mockAppointmentFindAll).toHaveBeenCalled();
+        expect(mockAppointmentFindAndCountAll).toHaveBeenCalledWith({
+            limit: 5,
+            offset: 0,
+        });
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith({
             message: 'An error occurred while retrieving appointments',

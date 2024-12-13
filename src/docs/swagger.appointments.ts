@@ -114,9 +114,24 @@
  * @swagger
  * /api/appointments:
  *   get:
- *     summary: Retrieve all appointments
- *     description: This endpoint retrieves all appointments from the database, including their details.
+ *     summary: Retrieve paginated appointments
+ *     description: This endpoint retrieves appointments from the database with pagination support. It includes details of each appointment and metadata for pagination.
  *     tags: [Appointments]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         required: false
+ *         description: The page number to retrieve (default is 1).
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           example: 5
+ *         required: false
+ *         description: The number of appointments per page (default is 5).
  *     responses:
  *       200:
  *         description: Appointments retrieved successfully
@@ -156,6 +171,15 @@
  *                         type: string
  *                         enum: [scheduled, pending, cancelled]
  *                         example: scheduled
+ *                 currentPage:
+ *                   type: integer
+ *                   example: 1
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 10
+ *                 totalAppointments:
+ *                   type: integer
+ *                   example: 50
  *       404:
  *         description: No appointments found
  *         content:
