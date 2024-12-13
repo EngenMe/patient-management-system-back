@@ -222,3 +222,87 @@
  *                   type: string
  *                   example: An error occurred.
  */
+
+/**
+ * @swagger
+ * /api/patient/{id}:
+ *   get:
+ *     summary: Retrieve patient details by ID
+ *     description: This endpoint retrieves the details of a patient based on their ID.
+ *     tags: [Patients]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the patient
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *     responses:
+ *       200:
+ *         description: Patient retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Patient retrieved successfully
+ *                 patient:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     fullName:
+ *                       type: string
+ *                       example: John Doe
+ *                     email:
+ *                       type: string
+ *                       example: john.doe@example.com
+ *                     phone:
+ *                       type: string
+ *                       example: +123456789
+ *                     dateOfBirth:
+ *                       type: string
+ *                       format: date
+ *                       example: 1990-01-01
+ *                     gender:
+ *                       type: string
+ *                       enum: [male, female]
+ *                       example: male
+ *                     address:
+ *                       type: string
+ *                       example: 123 Example Street
+ *       400:
+ *         description: Invalid patient ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid patient ID
+ *       404:
+ *         description: Patient not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Patient not found
+ *       500:
+ *         description: An error occurred while retrieving the patient
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: An error occurred.
+ */
