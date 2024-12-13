@@ -37,9 +37,18 @@
  *                 data:
  *                   type: object
  *                   properties:
- *                     adminId:
- *                       type: integer
- *                       example: 1
+ *                     admin:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: integer
+ *                           example: 1
+ *                         email:
+ *                           type: string
+ *                           example: admin@example.com
+ *                         fullName:
+ *                           type: string
+ *                           example: Admin User
  *       400:
  *         description: Missing or invalid email query parameter
  *         content:

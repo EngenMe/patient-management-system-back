@@ -9,6 +9,7 @@ class Admin extends Model {
     public fullName!: string;
     public role!: string;
     public status!: string;
+    public picturePath!: string;
     public lastLogin!: Date | null;
 }
 
@@ -58,6 +59,14 @@ Admin.init(
             defaultValue: 'active',
             validate: {
                 isIn: [['active', 'inactive', 'suspended']],
+            },
+        },
+        picturePath: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+            validate: {
+                isUrl: true,
+                notEmpty: true,
             },
         },
         lastLogin: {
