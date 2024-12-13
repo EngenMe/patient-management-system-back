@@ -76,3 +76,83 @@
  *                   type: string
  *                   example: An error occurred.
  */
+
+/**
+ * @swagger
+ * /api/doctor/{id}:
+ *   get:
+ *     summary: Retrieve doctor details by ID
+ *     description: This endpoint retrieves the details of a doctor based on their ID.
+ *     tags: [Doctors]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the doctor
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *     responses:
+ *       200:
+ *         description: Doctor retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Doctor retrieved successfully
+ *                 doctor:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     name:
+ *                       type: string
+ *                       example: Dr. Jane Smith
+ *                     phone:
+ *                       type: string
+ *                       example: +123456789
+ *                     email:
+ *                       type: string
+ *                       example: jane.smith@example.com
+ *                     speciality:
+ *                       type: string
+ *                       example: Cardiology
+ *                     imageUrl:
+ *                       type: string
+ *                       format: url
+ *                       example: http://example.com/jane-smith.jpg
+ *       400:
+ *         description: Invalid doctor ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid doctor ID
+ *       404:
+ *         description: Doctor not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Doctor not found
+ *       500:
+ *         description: An error occurred while retrieving the doctor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: An error occurred.
+ */
