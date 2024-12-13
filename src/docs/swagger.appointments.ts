@@ -109,3 +109,71 @@
  *                   type: string
  *                   example: An error occurred while creating the appointment
  */
+
+/**
+ * @swagger
+ * /api/appointments:
+ *   get:
+ *     summary: Retrieve all appointments
+ *     description: This endpoint retrieves all appointments from the database, including their details.
+ *     tags: [Appointments]
+ *     responses:
+ *       200:
+ *         description: Appointments retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Appointments retrieved successfully
+ *                 appointments:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       doctorId:
+ *                         type: integer
+ *                         example: 5
+ *                       patientId:
+ *                         type: integer
+ *                         example: 2
+ *                       reasonForAppointment:
+ *                         type: string
+ *                         example: Routine check-up
+ *                       additionalComments:
+ *                         type: string
+ *                         example: Patient prefers morning slots.
+ *                       expectedAppointmentDateAndTime:
+ *                         type: string
+ *                         format: date-time
+ *                         example: 2024-12-20T09:30:00
+ *                       status:
+ *                         type: string
+ *                         enum: [scheduled, pending, cancelled]
+ *                         example: scheduled
+ *       404:
+ *         description: No appointments found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: No appointments found
+ *       500:
+ *         description: An error occurred while retrieving appointments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: An error occurred while retrieving appointments
+ */

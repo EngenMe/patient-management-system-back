@@ -10,7 +10,7 @@ import doctorRoutes from './routes/doctors.routes';
 import idTypeRoutes from './routes/idTypes.routes';
 import patientRoutes from './routes/patients.routes';
 import verifyOtpRoutes from './routes/verifyOtp.routes';
-import createNewAppointmentRoutes from './routes/appointments.routes';
+import appointmentRoutes from './routes/appointments.routes';
 import adminRoutes from './routes/admins.routes';
 
 dotenv.config();
@@ -31,7 +31,7 @@ app.use('/api/patient', patientValidateRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/id-types', idTypeRoutes);
 app.use('/api/verify-otp', verifyOtpRoutes);
-app.use('/api/appointments', createNewAppointmentRoutes);
+app.use('/api/appointments', appointmentRoutes);
 app.use('/api/admins', adminRoutes);
 
 export default app;
