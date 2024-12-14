@@ -243,3 +243,157 @@
  *                   type: string
  *                   example: An error occurred while retrieving appointment counts
  */
+
+/**
+ * @swagger
+ * /api/appointments/{id}/schedule:
+ *   patch:
+ *     summary: Schedule an appointment
+ *     description: Updates the status of an appointment to "scheduled" for the given appointment ID.
+ *     tags: [Appointments]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         description: The ID of the appointment to be scheduled
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 example: scheduled
+ *     responses:
+ *       200:
+ *         description: Appointment successfully scheduled
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Appointment scheduled successfully
+ *                 appointment:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     status:
+ *                       type: string
+ *                       example: scheduled
+ *       400:
+ *         description: Appointment is already scheduled
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Appointment is already scheduled
+ *       404:
+ *         description: Appointment not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Appointment not found
+ *       500:
+ *         description: An error occurred while scheduling the appointment
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: An error occurred while scheduling the appointment
+ */
+
+/**
+ * @swagger
+ * /api/appointments/{id}/cancel:
+ *   patch:
+ *     summary: Cancel an appointment
+ *     description: Updates the status of an appointment to "cancelled" for the given appointment ID.
+ *     tags: [Appointments]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         description: The ID of the appointment to be cancelled
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 example: cancelled
+ *     responses:
+ *       200:
+ *         description: Appointment successfully cancelled
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Appointment cancelled successfully
+ *                 appointment:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     status:
+ *                       type: string
+ *                       example: cancelled
+ *       400:
+ *         description: Appointment is already cancelled
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Appointment is already cancelled
+ *       404:
+ *         description: Appointment not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Appointment not found
+ *       500:
+ *         description: An error occurred while cancelling the appointment
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: An error occurred while cancelling the appointment
+ */
