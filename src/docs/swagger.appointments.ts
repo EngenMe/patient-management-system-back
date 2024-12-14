@@ -201,3 +201,45 @@
  *                   type: string
  *                   example: An error occurred while retrieving appointments
  */
+
+/**
+ * @swagger
+ * /api/appointments/count:
+ *   get:
+ *     summary: Retrieve appointment counts by status
+ *     description: This endpoint retrieves the total counts of appointments grouped by their status (e.g., scheduled, pending, cancelled).
+ *     tags: [Appointments]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved appointment counts by status
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Appointment counts retrieved successfully
+ *                 counts:
+ *                   type: object
+ *                   properties:
+ *                     scheduled:
+ *                       type: integer
+ *                       example: 10
+ *                     pending:
+ *                       type: integer
+ *                       example: 5
+ *                     cancelled:
+ *                       type: integer
+ *                       example: 2
+ *       500:
+ *         description: An error occurred while retrieving appointment counts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: An error occurred while retrieving appointment counts
+ */
