@@ -1,7 +1,7 @@
 import OTP from '../models/otp.model';
 import crypto from 'crypto';
 
-export const createOtp = async (personId: number): Promise<string> => {
+export const createOtp = async (patientId: number): Promise<string> => {
     try {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -9,7 +9,7 @@ export const createOtp = async (personId: number): Promise<string> => {
 
         await OTP.upsert(
             {
-                personId,
+                patientId,
                 otpNumber: encodedOtp,
             },
             {

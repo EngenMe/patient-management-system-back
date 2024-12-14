@@ -8,7 +8,7 @@ import { getPatientById } from '../controllers/getPatientById.controller';
 const router = Router();
 
 router.post('/', uploadToS3, normalizePatientData, postPatient);
-router.get('/:id', getPatientById);
 router.get('/id', getPatientIdByEmail);
+router.get('/:id', getPatientById);
 
 export default router;
